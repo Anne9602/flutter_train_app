@@ -20,7 +20,14 @@ class SeatChoiceButton extends StatelessWidget {
         ),
         onPressed: () {
           // 좌석 선택 버튼 클릭 시 seat page로 이동
-          Navigator.pushNamed(context, '/seatpage');
+          Navigator.pushNamed(
+            context,
+            '/seatpage',
+            arguments: {
+              'departureStation': departureStation ?? '',
+              'arrivalStation': arrivalStation ?? '',
+            },
+          );
         },
         child: Text(
           '좌석 선택',
