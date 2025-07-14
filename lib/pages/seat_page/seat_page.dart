@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_train_app/pages/seat_page/widgets/lables.dart';
+import 'package:flutter_train_app/pages/seat_page/widgets/button.dart';
+import 'package:flutter_train_app/pages/seat_page/widgets/labels.dart';
 
 //좌석 선택 페이지
 
@@ -29,20 +30,18 @@ class _SeatPageState extends State<SeatPage> {
         child: Column(
           children: [
             SizedBox(height: 10),
+
             //출발역 -> 도착역 표시
-            departureToArrival(departure: departure, arrival: arrival),
+            DepartureToArrival(departure: departure, arrival: arrival),
             SizedBox(height: 10),
+
             //선택됨 및 선택 안 됨 표시
-            lable(),
-            //ABCD레이블
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                lableforLow('A'),
-                lableforLow('B'),
-                lableforLow(''),
-                lableforLow('C'),
-                lableforLow('D'),
+                coloredLabel(Colors.purple, '선택됨'),
+                SizedBox(width: 20),
+                coloredLabel(Colors.grey[300]!, '선택 안 됨'),
               ],
             ),
 
@@ -51,136 +50,31 @@ class _SeatPageState extends State<SeatPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: ListView(
-                  children: [for (int i = 0; i < 20; i++) row(i + 1)],
+                  children: [
+                    //ABCD 행 레이블 표시
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        labelForRow('A'),
+                        labelForRow('B'),
+                        labelForRow(''),
+                        labelForRow('C'),
+                        labelForRow('D'),
+                      ],
+                    ),
+                    SizedBox(height: 10), // 레이블과 좌석 사이 간격
+                    for (int i = 0; i < 20; i++) row(i + 1), //열 넘버 부여
+                  ],
                 ),
               ),
             ),
 
             //예매하기 버튼
-            reservation_button(context),
+            reservation_button(context, selectedRow, selectedCol),
             SizedBox(height: 10),
           ],
         ),
       ),
-    );
-  }
-
-  SizedBox reservation_button(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.purple,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
-        onPressed: () {
-          //선택된 좌석이 없으면 아무반응 x, 있으면 터치시 팝업 구현
-          if (selectedCol == null && selectedRow == null) {
-            return;
-          } else {
-            showCupertinoDialog(
-              context: context,
-              builder: (context) {
-                return CupertinoAlertDialog(
-                  title: Text('예매 하시겠습니까?'),
-                  content: Text('좌석: $selectedRow - $selectedCol'),
-                  actions: [
-                    CupertinoDialogAction(
-                      isDestructiveAction: true,
-                      onPressed: () {
-                        //취소 클릭시의 버튼 구현
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('취소'),
-                    ),
-                    CupertinoDialogAction(
-                      isDefaultAction: true,
-
-                      child: Text(
-                        '확인',
-                        style: TextStyle(color: CupertinoColors.activeBlue),
-                      ),
-
-                      onPressed: () {
-                        //확인 클릭시의 버튼 구현
-                        Navigator.of(context).pop();
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/',
-                          (route) => false,
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        },
-        child: Text(
-          '예매하기',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  //ABCD레이블 표시
-  Widget lableforLow(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Container(
-        height: 50,
-        width: 50,
-        child: Center(child: Text(text, style: TextStyle(fontSize: 18))),
-      ),
-    );
-  }
-
-  //선택됨 및 선택 안 됨 표시
-  Row lable() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        //선택됨
-        Row(
-          children: [
-            Container(
-              height: 24,
-              width: 24,
-              decoration: BoxDecoration(
-                color: Colors.purple,
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            SizedBox(width: 4),
-            Text('선택됨'),
-          ],
-        ),
-        SizedBox(width: 20),
-        //선택 안 됨
-        Row(
-          children: [
-            Container(
-              height: 24,
-              width: 24,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            SizedBox(width: 4),
-            Text('선택 안 됨'),
-          ],
-        ),
-      ],
     );
   }
 
