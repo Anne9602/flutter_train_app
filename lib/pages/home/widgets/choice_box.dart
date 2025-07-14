@@ -52,7 +52,10 @@ class ChoiceBox extends StatelessWidget {
                         var result = await Navigator.pushNamed(
                           context,
                           '/stationList',
-                          arguments: 'departure',
+                          arguments: {
+                            'type': 'departure',
+                            'selectedStation': arrivalStation,
+                          },
                         );
                         // 선택된 출발역을 받아와서 상태 업데이트
                         // 만약 result가 null이 아니면 선택된 역을 업데이트(콜백함수)
@@ -91,7 +94,10 @@ class ChoiceBox extends StatelessWidget {
                         var result = await Navigator.pushNamed(
                           context,
                           '/stationList',
-                          arguments: 'arrival',
+                          arguments: {
+                            'type': 'arrival',
+                            'selectedStation': departureStation,
+                          },
                         );
                         // 선택된 도착역을 받아와서 상태 업데이트
                         // 만약 result가 null이 아니면 선택된 역을 업데이트
