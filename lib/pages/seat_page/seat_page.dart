@@ -20,7 +20,7 @@ class _SeatPageState extends State<SeatPage> {
   Widget build(BuildContext context) {
     //출발역과 도착역 인자 정보 받기
     final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+        ModalRoute.of(context)!.settings.arguments as Map<String, String?>;
     String departure = args['departureStation'] ?? '';
     String arrival = args['arrivalStation'] ?? '';
 
