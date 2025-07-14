@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_train_app/pages/seat_page/widgets/lables.dart';
 
 //좌석 선택 페이지
 
@@ -23,7 +25,7 @@ class _SeatPageState extends State<SeatPage> {
     return Scaffold(
       appBar: AppBar(title: Center(child: Text('좌석 선택'))),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 60),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             SizedBox(height: 10),
@@ -32,38 +34,108 @@ class _SeatPageState extends State<SeatPage> {
             SizedBox(height: 10),
             //선택됨 및 선택 안 됨 표시
             lable(),
-            SizedBox(height: 10),
             //ABCD레이블
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 lableforLow('A'),
                 lableforLow('B'),
-                lableforLow(' '),
+                lableforLow(''),
                 lableforLow('C'),
                 lableforLow('D'),
               ],
             ),
 
+            //좌석 선택(
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: ListView(
-                  children: [
-                    //좌석 선택
-                    for (int i = 0; i < 20; i++) row(i + 1),
-                  ],
+                  children: [for (int i = 0; i < 20; i++) row(i + 1)],
                 ),
               ),
             ),
+
+            //예매하기 버튼
+            reservation_button(context),
+            SizedBox(height: 10),
           ],
         ),
       ),
     );
   }
 
+  SizedBox reservation_button(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.purple,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        onPressed: () {
+          //선택된 좌석이 없으면 아무반응 x, 있으면 터치시 팝업 구현
+          if (selectedCol == null && selectedRow == null) {
+            return;
+          } else {
+            showCupertinoDialog(
+              context: context,
+              builder: (context) {
+                return CupertinoAlertDialog(
+                  title: Text('예매 하시겠습니까?'),
+                  content: Text('좌석: $selectedRow - $selectedCol'),
+                  actions: [
+                    CupertinoDialogAction(
+                      isDestructiveAction: true,
+                      onPressed: () {
+                        //취소 클릭시의 버튼 구현
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('취소'),
+                    ),
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
+
+                      child: Text(
+                        '확인',
+                        style: TextStyle(color: CupertinoColors.activeBlue),
+                      ),
+
+                      onPressed: () {
+                        //확인 클릭시의 버튼 구현
+                        Navigator.of(context).pop();
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/',
+                          (route) => false,
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        },
+        child: Text(
+          '예매하기',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
   //ABCD레이블 표시
-  Expanded lableforLow(String text) {
-    return Expanded(
+  Widget lableforLow(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Container(
         height: 50,
         width: 50,
@@ -73,7 +145,6 @@ class _SeatPageState extends State<SeatPage> {
   }
 
   //선택됨 및 선택 안 됨 표시
-
   Row lable() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -163,56 +234,6 @@ class _SeatPageState extends State<SeatPage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-//출발역 -> 도착역 위젯
-class departureToArrival extends StatelessWidget {
-  const departureToArrival({
-    super.key,
-    required this.departure,
-    required this.arrival,
-  });
-
-  final String departure;
-  final String arrival;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        //출발역
-        Expanded(
-          child: Center(
-            child: Text(
-              departure,
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.purple,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-
-        //화살표 아이콘
-        Expanded(child: Icon(Icons.arrow_circle_right_outlined, size: 30)),
-
-        // 도착역
-        Expanded(
-          child: Center(
-            child: Text(
-              arrival,
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.purple,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

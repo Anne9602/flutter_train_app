@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//좌석선택 버튼 위젯 구현
+
 class SeatChoiceButton extends StatelessWidget {
   SeatChoiceButton(this.departureStation, this.arrivalStation, {super.key});
 
