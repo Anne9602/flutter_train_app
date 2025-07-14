@@ -10,6 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //home page - choice box - seat choice button 용 변수
   String? departureStation;
   String? arrivalStation;
 

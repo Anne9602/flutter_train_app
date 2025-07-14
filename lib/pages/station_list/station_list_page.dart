@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 //출발역과 도착역 선택 페이지
+
 class StationListPage extends StatelessWidget {
   StationListPage({super.key});
   final List<String> stations = [
