@@ -24,24 +24,49 @@ class _SeatPageState extends State<SeatPage> {
       appBar: AppBar(title: Center(child: Text('좌석 선택'))),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 60),
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            //출발역 -> 도착역 표시
-            departureToArrival(departure: departure, arrival: arrival),
-            SizedBox(height: 10),
-            //선택됨 및 선택 안 됨 표시
-            lable(),
-            SizedBox(height: 10),
-            //좌석 선택
-            col(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              //출발역 -> 도착역 표시
+              departureToArrival(departure: departure, arrival: arrival),
+              SizedBox(height: 10),
+              //선택됨 및 선택 안 됨 표시
+              lable(),
+              SizedBox(height: 10),
+              //ABCD레이블
+              Row(
+                children: [
+                  lableforLow('A'),
+                  lableforLow('B'),
+                  lableforLow(' '),
+                  lableforLow('C'),
+                  lableforLow('D'),
+                ],
+              ),
+
+              //좌석 선택
+              col(),
+            ],
+          ),
         ),
       ),
     );
   }
 
+  //ABCD레이블 표시
+  Expanded lableforLow(String text) {
+    return Expanded(
+      child: Container(
+        height: 50,
+        width: 50,
+        child: Center(child: Text(text, style: TextStyle(fontSize: 18))),
+      ),
+    );
+  }
+
   //선택됨 및 선택 안 됨 표시
+
   Row lable() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -49,32 +74,32 @@ class _SeatPageState extends State<SeatPage> {
         //선택됨
         Row(
           children: [
-            SizedBox(width: 20),
             Container(
-              height: 36,
-              width: 36,
+              height: 24,
+              width: 24,
               decoration: BoxDecoration(
-                //클릭한 row,col의 도형 색칠하기
                 color: Colors.purple,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
+            SizedBox(width: 4),
             Text('선택됨'),
           ],
         ),
-        SizedBox(width: 30),
+        SizedBox(width: 20),
         //선택 안 됨
         Row(
           children: [
             Container(
-              height: 36,
-              width: 36,
+              height: 24,
+              width: 24,
               decoration: BoxDecoration(
                 //클릭한 row,col의 도형 색칠하기
-                color: Colors.grey[350],
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
+            SizedBox(width: 4),
             Text('선택 안 됨'),
           ],
         ),
@@ -84,20 +109,7 @@ class _SeatPageState extends State<SeatPage> {
 
   //열 넘버 부여
   Column col() {
-    return Column(
-      children: [
-        row(1),
-        row(2),
-        row(3),
-        row(4),
-        row(5),
-        row(6),
-        row(7),
-        row(8),
-        row(9),
-        row(10),
-      ],
-    );
+    return Column(children: [for (int i = 0; i < 20; i++) row(i + 1)]);
   }
 
   //행 넘버 부여
@@ -119,7 +131,7 @@ class _SeatPageState extends State<SeatPage> {
       child: AspectRatio(
         aspectRatio: 1,
         child: Padding(
-          padding: const EdgeInsets.all(2),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           child: Container(child: Center(child: Text(num))),
         ),
       ),
@@ -129,28 +141,25 @@ class _SeatPageState extends State<SeatPage> {
   //좌석 그리기
   Expanded seat(int row, String col) {
     return Expanded(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Padding(
-          padding: const EdgeInsets.all(2),
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedRow = row;
-                selectedCol = col;
-              });
-            },
-            child: Container(
-              height: 36,
-              width: 36,
-              decoration: BoxDecoration(
-                //클릭한 row,col의 도형 색칠하기
-                color:
-                    selectedRow == row && selectedCol == col
-                        ? Colors.purple
-                        : Colors.grey[350],
-                borderRadius: BorderRadius.circular(10),
-              ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              selectedRow = row;
+              selectedCol = col;
+            });
+          },
+          child: Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              //클릭한 row,col의 도형 색칠하기
+              color:
+                  selectedRow == row && selectedCol == col
+                      ? Colors.purple
+                      : Colors.grey[300],
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
         ),
@@ -174,36 +183,30 @@ class departureToArrival extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        //출발역
         Expanded(
           child: Center(
             child: Text(
               departure,
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 30,
                 color: Colors.purple,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ),
-        Expanded(
-          child: Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.black, width: 3),
-            ),
-            child: Icon(Icons.arrow_forward),
-          ),
-        ),
 
+        //화살표 아이콘
+        Expanded(child: Icon(Icons.arrow_circle_right_outlined, size: 30)),
+
+        // 도착역
         Expanded(
           child: Center(
             child: Text(
               arrival,
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 30,
                 color: Colors.purple,
                 fontWeight: FontWeight.bold,
               ),
