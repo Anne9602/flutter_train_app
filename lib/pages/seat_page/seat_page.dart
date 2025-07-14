@@ -24,31 +24,38 @@ class _SeatPageState extends State<SeatPage> {
       appBar: AppBar(title: Center(child: Text('좌석 선택'))),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 60),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              //출발역 -> 도착역 표시
-              departureToArrival(departure: departure, arrival: arrival),
-              SizedBox(height: 10),
-              //선택됨 및 선택 안 됨 표시
-              lable(),
-              SizedBox(height: 10),
-              //ABCD레이블
-              Row(
-                children: [
-                  lableforLow('A'),
-                  lableforLow('B'),
-                  lableforLow(' '),
-                  lableforLow('C'),
-                  lableforLow('D'),
-                ],
-              ),
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            //출발역 -> 도착역 표시
+            departureToArrival(departure: departure, arrival: arrival),
+            SizedBox(height: 10),
+            //선택됨 및 선택 안 됨 표시
+            lable(),
+            SizedBox(height: 10),
+            //ABCD레이블
+            Row(
+              children: [
+                lableforLow('A'),
+                lableforLow('B'),
+                lableforLow(' '),
+                lableforLow('C'),
+                lableforLow('D'),
+              ],
+            ),
 
-              //좌석 선택
-              col(),
-            ],
-          ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: ListView(
+                  children: [
+                    //좌석 선택
+                    for (int i = 0; i < 20; i++) row(i + 1),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -94,7 +101,6 @@ class _SeatPageState extends State<SeatPage> {
               height: 24,
               width: 24,
               decoration: BoxDecoration(
-                //클릭한 row,col의 도형 색칠하기
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -107,14 +113,10 @@ class _SeatPageState extends State<SeatPage> {
     );
   }
 
-  //열 넘버 부여
-  Column col() {
-    return Column(children: [for (int i = 0; i < 20; i++) row(i + 1)]);
-  }
-
   //행 넘버 부여
   Row row(int row) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         seat(row, 'A'),
         seat(row, 'B'),
@@ -126,41 +128,38 @@ class _SeatPageState extends State<SeatPage> {
   }
 
   //좌석 넘버 부여
-  Expanded number(String num) {
-    return Expanded(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          child: Container(child: Center(child: Text(num))),
-        ),
+  Widget number(String num) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Container(
+        height: 50,
+        width: 50,
+        child: Center(child: Text(num, style: TextStyle(fontSize: 18))),
       ),
     );
   }
 
   //좌석 그리기
-  Expanded seat(int row, String col) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedRow = row;
-              selectedCol = col;
-            });
-          },
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              //클릭한 row,col의 도형 색칠하기
-              color:
-                  selectedRow == row && selectedCol == col
-                      ? Colors.purple
-                      : Colors.grey[300],
-              borderRadius: BorderRadius.circular(8),
-            ),
+  Widget seat(int row, String col) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedRow = row;
+            selectedCol = col;
+          });
+        },
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            //클릭한 row,col의 도형 색칠하기
+            color:
+                selectedRow == row && selectedCol == col
+                    ? Colors.purple
+                    : Colors.grey[300],
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
