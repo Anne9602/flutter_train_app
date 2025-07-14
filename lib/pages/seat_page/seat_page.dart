@@ -18,6 +18,7 @@ class _SeatPageState extends State<SeatPage> {
 
   @override
   Widget build(BuildContext context) {
+    //출발역과 도착역 인자 정보 받기
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     String departure = args['departureStation'] ?? '';
@@ -41,7 +42,7 @@ class _SeatPageState extends State<SeatPage> {
               children: [
                 coloredLabel(Colors.purple, '선택됨'),
                 SizedBox(width: 20),
-                coloredLabel(Colors.grey[300]!, '선택 안 됨'),
+                coloredLabel(Theme.of(context).dividerColor, '선택 안 됨'),
               ],
             ),
 
@@ -123,7 +124,7 @@ class _SeatPageState extends State<SeatPage> {
             color:
                 selectedRow == row && selectedCol == col
                     ? Colors.purple
-                    : Colors.grey[300],
+                    : Theme.of(context).dividerColor,
             borderRadius: BorderRadius.circular(8),
           ),
         ),

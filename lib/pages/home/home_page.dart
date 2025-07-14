@@ -28,9 +28,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(title: Center(child: Text('기차 예매'))),
-      backgroundColor: Colors.grey[200],
+      backgroundColor: isDark ? Colors.grey[1000] : Colors.grey[200],
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

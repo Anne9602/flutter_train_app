@@ -20,12 +20,15 @@ class ChoiceBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //다크씸용 색깔 선언
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Stack(
       children: [
         Container(
           height: 200,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDark ? Colors.grey[800] : Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
         ),
