@@ -1,16 +1,7 @@
-# flutter_train_app
+### flutter_train_app
 
-A new Flutter project.
+## 기차표 예약 어플
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. 홈페이지에서 출발역과 도착역 선택 시 역 리스트 화면으로 이동
+2. 역 리스트 화면에서 역 선택 후 돌아와서 좌석 선택 클릭 시 좌석 선택 페이지로 이동
+3. 좌석 선택 페이지에서 좌석 위치 선택 후 예약 선택시 홈페이지로 이동
